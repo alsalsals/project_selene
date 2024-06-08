@@ -10,7 +10,6 @@ def test_check_name_on_github_page():
 def test_download_selene_project():
     """ Open github and download the project """
     browser.open('https://github.com/alsalsals')
-    browser.element(by.text('selene_project')).click()
+    browser.element(by.text('project_selene')).click()
     browser.all('//button').element_by(have.text('Code')).click()
     browser.all('[data-component*="ActionList.Item--DividerContainer"]').element_by(have.text('Download ZIP')).click()
-
