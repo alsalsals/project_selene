@@ -1,7 +1,10 @@
 # Byte-compiled / optimized / DLL files
 .idea
+
+#Allure
 allure-results
 tests/allure-results
+
 __pycache__/
 *.py[cod]
 *$py.class
