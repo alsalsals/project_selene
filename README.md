@@ -1,4 +1,4 @@
-Website automation project using selene + pytest
+Website automation project using pytest + selene + allure
 
 for working with project use terminal:
 1. for install requirements: pip install -r requirements.txt
