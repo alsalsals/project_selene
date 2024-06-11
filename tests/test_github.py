@@ -2,6 +2,8 @@ import allure
 from selene import browser, by, be, have
 from selene.support.shared.jquery_style import s
 
+from tests import steps_allure as step
+
 
 def test_check_name_on_github_page():
     """ Open github and check name on the pages """
@@ -18,7 +20,7 @@ def test_download_project_selene():
         have.text('Download ZIP')).click()
 
 
-def test_search_issue():
+def test_search_issue_with_allure_logs():
     """ Open github and search issue """
     with allure.step("Open github"):
         browser.open('https://github.com/')
@@ -34,4 +36,9 @@ def test_search_issue():
     with allure.step("Looking for 'for test' issue"):
         s(by.partial_text('for test')).should(be.visible)
 
+def test_search_issue_with_allure_fixture():
+    """ Open github and search issue """
+    step.open_github()
+    step.search_repo('alsalsals/project_selene')
+    step.looking_for_issue('for test')
 
