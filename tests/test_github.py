@@ -1,8 +1,13 @@
-import allure
-from selene import browser, by, be, have, query
-from selene.support.shared.jquery_style import s
-import requests
+import os.path
 
+import requests
+import allure
+from selene import by, be, have, query
+from selene.support.shared import browser
+from selene.support.shared.jquery_style import s
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from tests import steps_allure as step
 
 
@@ -12,8 +17,8 @@ def test_check_name_on_github_page():
     browser.element('[itemprop="name"]').should(have.text('Alsu Fayzullina'))
 
 
-def test_download_readme():
-    """ Open github and download the readme """
+def test_download_readme_by_href():
+    """ Open github, download the readme and check text"""
     browser.open('https://github.com/alsalsals/project_selene/blob/master/README.md')
 
     href_readme = browser.element('[data-testid="raw-button"]').get(query.attribute('href'))
@@ -26,6 +31,32 @@ def test_download_readme():
         text = f.read()
         assert "to generate reports after test run: allure serve tests/allure-result" in text
 
+
+def test_download_readme_by_button():
+    """ Open github, download the readme and check text"""
+    currient_dir = os.path.dirname(os.path.abspath(__file__))
+    if not os.path.exists('tmp'):
+        os.mkdir('tmp')
+    options = webdriver.ChromeOptions()
+    prefs = {
+        "download.default_directory": os.path.join(currient_dir, 'tmp'),
+        "download.prompt_for_download": False,
+    }
+
+    options.add_experimental_option("prefs", prefs)
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),
+                              options=options)
+
+    browser.config.driver = driver
+    # browser.config.hold_browser_open = True
+
+    browser.open('https://github.com/alsalsals/project_selene/blob/master/README.md')
+    browser.element('[data-testid="download-raw-button"]').click()
+
+    with open('tmp/README.md') as f:
+        text = f.read()
+        assert "to generate reports after test run: allure serve tests/allure-result" in text
 
 
 def test_search_issue_with_allure_logs():
