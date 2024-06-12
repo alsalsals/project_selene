@@ -1,6 +1,7 @@
 import allure
-from selene import browser, by, be, have
+from selene import browser, by, be, have, query
 from selene.support.shared.jquery_style import s
+import requests
 
 from tests import steps_allure as step
 
@@ -11,13 +12,20 @@ def test_check_name_on_github_page():
     browser.element('[itemprop="name"]').should(have.text('Alsu Fayzullina'))
 
 
-def test_download_project_selene():
-    """ Open github and download the project """
-    browser.open('https://github.com/alsalsals11')
-    browser.element(by.text('project_selene')).click()
-    browser.all('//button').element_by(have.text('Code')).click()
-    browser.all('[data-component*="ActionList.Item--DividerContainer"]').element_by(
-        have.text('Download ZIP')).click()
+def test_download_readme():
+    """ Open github and download the readme """
+    browser.open('https://github.com/alsalsals/project_selene/blob/master/README.md')
+
+    href_readme = browser.element('[data-testid="raw-button"]').get(query.attribute('href'))
+    file_readme = requests.get(href_readme).content
+
+    with open('README.md', 'wb') as f:
+        f.write(file_readme)
+
+    with open('README.md') as f:
+        text = f.read()
+        assert "to generate reports after test run: allure serve tests/allure-result" in text
+
 
 
 def test_search_issue_with_allure_logs():
@@ -35,6 +43,7 @@ def test_search_issue_with_allure_logs():
 
     with allure.step("Looking for 'for test' issue"):
         s(by.partial_text('for test')).should(be.visible)
+
 
 def test_search_issue_with_allure_fixture():
     """ Open github and search issue """
