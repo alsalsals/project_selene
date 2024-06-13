@@ -24,10 +24,10 @@ def test_download_readme_by_href():
     href_readme = browser.element('[data-testid="raw-button"]').get(query.attribute('href'))
     file_readme = requests.get(href_readme).content
 
-    with open('README.md', 'wb') as f:
+    with open('tmp/README.md', 'wb') as f:
         f.write(file_readme)
 
-    with open('README.md') as f:
+    with open('tmp/README.md') as f:
         text = f.read()
         assert "to generate reports after test run: allure serve tests/allure-result" in text
 

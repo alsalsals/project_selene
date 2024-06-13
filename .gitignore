@@ -1,6 +1,9 @@
 # Byte-compiled / optimized / DLL files
 .idea
 
+#tests
+tests/tmp
+
 #Allure
 allure-results
 tests/allure-results
