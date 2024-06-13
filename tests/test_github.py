@@ -1,5 +1,4 @@
 import os.path
-
 import requests
 import allure
 from selene import by, be, have, query
