@@ -10,35 +10,42 @@ from webdriver_manager.chrome import ChromeDriverManager
 from tests import steps_allure as step
 
 
-def test_check_name_on_github_page():
-    """ Open github and check name on the pages """
-    browser.open('https://github.com/alsalsals')
-    browser.element('[itemprop="name"]').should(have.text('Alsu Fayzullina'))
+def test_check_title():
+    """ Open github and tittle """
+    with allure.step("Open github"):
+        browser.open('https://github.com/alsalsals')
+    with allure.step("Check tittle of the page"):
+        browser.should(have.title('alsalsals (Alsu Fayzullina) · GitHub'))
+    with allure.step("Check name of the page"):
+        browser.element('[itemprop="name"]').should(have.text('Alsu Fayzullina'))
 
 
 def test_download_readme_by_href():
     """ Open github, download the readme and check text"""
-    browser.open('https://github.com/alsalsals/project_selene/blob/master/README.md')
+    with allure.step("Open github's README"):
+        browser.open('https://github.com/alsalsals/project_selene/blob/master/README.md')
 
-    href_readme = browser.element('[data-testid="raw-button"]').get(query.attribute('href'))
-    file_readme = requests.get(href_readme).content
-
-    with open('tmp/README.md', 'wb') as f:
-        f.write(file_readme)
-
-    with open('tmp/README.md') as f:
-        text = f.read()
-        assert "to generate reports after test run: allure serve tests/allure-result" in text
+    with allure.step("Get href of the Readme.md file"):
+        href_readme = browser.element('[data-testid="raw-button"]').get(query.attribute('href'))
+    with allure.step("Download the file's content"):
+        file_readme = requests.get(href_readme).content
+    with allure.step("Write the content in file"):
+        with open('tmp/README.md', 'wb') as f:
+            f.write(file_readme)
+    with allure.step("Check the text in the file"):
+        with open('tmp/README.md') as f:
+            text = f.read()
+            assert "to generate reports after test run: allure serve tests/allure-result" in text
 
 
 def test_download_readme_by_button():
     """ Open github, download the readme and check text"""
-    currient_dir = os.path.dirname(os.path.abspath(__file__))
+    curient_dir = os.path.dirname(os.path.abspath(__file__))
     if not os.path.exists('tmp'):
         os.mkdir('tmp')
     options = webdriver.ChromeOptions()
     prefs = {
-        "download.default_directory": os.path.join(currient_dir, 'tmp'),
+        "download.default_directory": os.path.join(curient_dir, 'tmp'),
         "download.prompt_for_download": False,
     }
 
