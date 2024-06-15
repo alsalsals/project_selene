@@ -1,4 +1,6 @@
 import os.path
+from urllib.parse import urljoin
+
 import requests
 import allure
 from selene import by, be, have, query
@@ -9,33 +11,48 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from tests import steps_allure as step
 
+base_url = 'https://github.com/alsalsals/'
 
 def test_check_title():
     """ Open github and tittle """
     with allure.step("Open github"):
-        browser.open('https://github.com/alsalsals')
+        browser.open(base_url)
+
     with allure.step("Check tittle of the page"):
         browser.should(have.title('alsalsals (Alsu Fayzullina) · GitHub'))
+
     with allure.step("Check name of the page"):
         browser.element('[itemprop="name"]').should(have.text('Alsu Fayzullina'))
+
+
+def test_open_project_selene():
+    """ Check project_selene name """
+    with allure.step("Open github"):
+        browser.open(base_url)
+
+    with allure.step("project_selene"):
+        browser.all('.repo').first.should(have.text('project_selene'))
 
 
 def test_download_readme_by_href():
     """ Open github, download the readme and check text"""
     with allure.step("Open github's README"):
-        browser.open('https://github.com/alsalsals/project_selene/blob/master/README.md')
+        browser.open(urljoin(base_url,'/project_selene/blob/master/README.md'))
 
     with allure.step("Get href of the Readme.md file"):
         href_readme = browser.element('[data-testid="raw-button"]').get(query.attribute('href'))
+
     with allure.step("Download the file's content"):
         file_readme = requests.get(href_readme).content
+
     with allure.step("Write the content in file"):
         with open('tmp/README.md', 'wb') as f:
             f.write(file_readme)
+
     with allure.step("Check the text in the file"):
         with open('tmp/README.md') as f:
             text = f.read()
-            assert "to generate reports after test run: allure serve tests/allure-result" in text
+            assert "allure serve tests/allure-result" in text
 
 
 def test_download_readme_by_button():
@@ -68,7 +85,7 @@ def test_download_readme_by_button():
 def test_search_issue_with_allure_logs():
     """ Open github and search issue """
     with allure.step("Open github"):
-        browser.open('https://github.com/')
+        browser.open(base_url)
 
     with allure.step("Search 'alsalsals/project_selene'"):
         s('.header-search-button').click()
