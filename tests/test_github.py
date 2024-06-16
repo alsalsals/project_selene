@@ -3,7 +3,7 @@ from urllib.parse import urljoin
 
 import requests
 import allure
-from selene import by, be, have, query
+from selene import by, be, have, query, command
 from selene.support.shared import browser
 from selene.support.shared.jquery_style import s
 from selenium import webdriver
@@ -12,6 +12,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from tests import steps_allure as step
 
 base_url = 'https://github.com/alsalsals/'
+
 
 def test_check_title():
     """ Open github and tittle """
@@ -25,7 +26,7 @@ def test_check_title():
         browser.element('[itemprop="name"]').should(have.text('Alsu Fayzullina'))
 
 
-def test_open_project_selene():
+def test_check_project_selene():
     """ Check project_selene name """
     with allure.step("Open github"):
         browser.open(base_url)
@@ -96,7 +97,7 @@ def test_search_issue_with_allure_logs():
         s('#issues-tab').click()
 
     with allure.step("Looking for 'for test' issue"):
-        s(by.partial_text('for test')).should(be.visible)
+        s(by.partial_text('for test')).with_(timeout=10).should(be.visible)
 
 
 def test_search_issue_with_allure_fixture():
@@ -104,4 +105,17 @@ def test_search_issue_with_allure_fixture():
     step.open_github()
     step.search_repo('alsalsals/project_selene')
     step.looking_for_issue('for test')
+
+
+def test_open_docs():
+    """ Check project_selene name """
+    with allure.step("Open github"):
+        browser.open(base_url)
+
+    with allure.step("Open repositories list page"):
+        browser.element('#repositories-tab').perform(command.js.click)
+    with allure.step("Scroll into view element"):
+        browser.element('[href*="your-github-profile"]').perform(command.js.scroll_into_view)
+        browser.driver.execute_script("document.querySelector('.body-height').style.transform='scale(.65)'")
+
 
