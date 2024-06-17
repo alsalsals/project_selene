@@ -33,7 +33,7 @@ def test_check_repo_project_selene_on_the_page():
         browser.open(base_url)
 
     with allure.step("Check repo's name on the page"):
-        browser.all('.repo').first.should(have.text('project_selene'))
+        browser.all('.repo').should(have.text('project_selene'))
 
 
 def test_download_readme_by_href():
