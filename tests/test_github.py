@@ -33,7 +33,18 @@ def test_check_repo_project_selene_on_the_page():
         browser.open(base_url)
 
     with allure.step("Check repo's name on the page"):
-        browser.all('.repo').should(have.text('project_selene'))
+        browser.all('.repo').element_by(have.text('project_selene')).should(be.visible)
+
+
+# def test_check_repo_project_selene_color():
+#     """ """
+#     with allure.step("Open github"):
+#         browser.open(base_url)
+#
+#     with allure.step("Check repo's name on the page"):
+#         link = browser.element(by.text("project_selene"))
+#         link.hover()
+#         assert link.get(query.css_property('background-color')) in '--fgColor-accent'
 
 
 def test_download_readme_by_href():
@@ -93,9 +104,6 @@ def test_download_readme_by_button():
         while not os.path.exists('tmp/README.md') and elapsed_time < max_wait_time:
             time.sleep(poll_interval)
             elapsed_time += poll_interval
-
-        if not os.path.exists('tmp/README.md'):
-            raise TimeoutError(f'File README.md not downloaded within {max_wait_time} seconds.')
 
     with allure.step("Check the text in the file"):
         with open('tmp/README.md') as f:
