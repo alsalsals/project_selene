@@ -7,9 +7,9 @@ for working with project use terminal:
 4. to generate reports after test run: allure serve tests/allure-results
 
 #### allure reports:
-![img_1.png](img_1.png)
-![img.png](img.png)
+![img_1.png](resources/images/img_1.png)
+![img.png](resources/images/img.png)
 
 #### notifications bot:
 https://t.me/test_selen_bot
-![img_2.png](img_2.png)
+![img_2.png](resources/images/img_2.png)

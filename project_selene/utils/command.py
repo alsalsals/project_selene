@@ -1,0 +1,1 @@
+# file with commands for running tests (for example mobile(swipe, Tap, etc.))

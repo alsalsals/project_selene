@@ -2,7 +2,7 @@
 .idea
 
 #tests
-tests/tmp
+tests/ui/tmp
 
 #Allure
 allure-results

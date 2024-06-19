@@ -10,7 +10,7 @@ from selene.support.shared.jquery_style import s
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from tests import steps_allure as step
+from tests.ui import steps_allure as step
 
 base_url = 'https://github.com/alsalsals/'
 
@@ -59,11 +59,11 @@ def test_download_readme_by_href():
         file_readme = requests.get(href_readme).content
 
     with allure.step("Write the content in file"):
-        with open('tmp/README.md', 'wb') as f:
+        with open('ui/tmp/README.md', 'wb') as f:
             f.write(file_readme)
 
     with allure.step("Check the text in the file"):
-        with open('tmp/README.md') as f:
+        with open('ui/tmp/README.md') as f:
             text = f.read()
             assert "allure serve tests/allure-result" in text
 
@@ -73,10 +73,10 @@ def test_download_readme_by_button():
     with allure.step("Create a tmp if it does not exist"):
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
-        if not os.path.exists('tmp'):
-            os.mkdir('tmp')
-        elif os.path.exists('tmp/README.md'):
-            os.remove('tmp/README.md')
+        if not os.path.exists('ui/tmp'):
+            os.mkdir('ui/tmp')
+        elif os.path.exists('ui/tmp/README.md'):
+            os.remove('ui/tmp/README.md')
 
         options = webdriver.ChromeOptions()
         prefs = {
@@ -101,12 +101,12 @@ def test_download_readme_by_button():
         elapsed_time = 0
         poll_interval = 0.5  # file check interval in seconds
 
-        while not os.path.exists('tmp/README.md') and elapsed_time < max_wait_time:
+        while not os.path.exists('ui/tmp/README.md') and elapsed_time < max_wait_time:
             time.sleep(poll_interval)
             elapsed_time += poll_interval
 
     with allure.step("Check the text in the file"):
-        with open('tmp/README.md') as f:
+        with open('ui/tmp/README.md') as f:
             text = f.read()
             assert "to generate reports after test run: allure serve tests/allure-result" in text
 
