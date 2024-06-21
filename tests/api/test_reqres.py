@@ -20,7 +20,7 @@ def test_single_user():
 
 @pytest.mark.parametrize('id_', [1, 2, 3])
 def test_single_user_id(id_):
-    """  """
+    """ Query the user id and get user id """
     url = f'https://reqres.in/api/users/{id_}'
 
     result: Response = requests.get(url)
@@ -34,7 +34,13 @@ def test_list_of_users_pagination():
     page = 2
     per_page = 6
     url = f'https://reqres.in/api/users'
-    result = requests.get(url, params={"page": page, "per_page": per_page})
+    result: Response = requests.get(
+        url=url,
+        params={"page": page, "per_page": per_page},
+        headers={"Content-Type": "multipart/form-data"},
+        json={},
+        cookies={}
+    )
 
     assert result.json()['page'] == page
     assert result.json()['per_page'] == per_page

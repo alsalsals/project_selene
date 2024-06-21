@@ -1,5 +1,6 @@
-pytest>=8.2.2
-selene>=2.0.0rc9
-allure-pytest>=2.13.2
-requests>=2.32.3
-selenium~=4.21.0
+pytest==8.2.2
+selene==2.0.0rc9
+allure-pytest==2.13.2
+requests==2.32.3
+selenium==4.21.0
+jsonschema==4.22.0
