@@ -21,12 +21,14 @@ def test_login_api():
         body=result.text,
         name="Response",
         attachment_type=AttachmentType.TEXT,
-        extension='txt')
+        extension='txt'
+    )
+
     allure.attach(
-        body=json.dumps(result.json(), indent=4, ensure_ascii=True),
-        name="Response",
-        attachment_type=AttachmentType.JSON,
-        extension='json'
+        body=str(result.cookies),
+        name="Cookies",
+        attachment_type=AttachmentType.TEXT,
+        extension='txt'
     )
 
     print(result.status_code)
