@@ -1,5 +1,4 @@
 import json
-
 import allure
 import pytest
 import requests
