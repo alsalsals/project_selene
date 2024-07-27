@@ -1,0 +1,2 @@
+class GithubPage:
+    pass
